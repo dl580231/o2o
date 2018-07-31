@@ -1,7 +1,11 @@
 package com.nuc.o2o.entity;
 
 import java.util.Date;
-
+/**
+ * 
+ * @author donglei?hahaha
+ *
+ */
 public class Area {
 	//ID
 	private Integer area_id;
