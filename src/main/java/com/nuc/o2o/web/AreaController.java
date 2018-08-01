@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.management.loading.PrivateClassLoader;
+
+import org.eclipse.jdt.internal.compiler.ast.ThisReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,21 +24,28 @@ import com.nuc.o2o.service.AreaService;
 public class AreaController {
 	@Autowired
 	private AreaService areaService;
+	private Logger looger=LoggerFactory.getLogger(this.getClass());
 	
 	@ResponseBody
 	@RequestMapping(value="/listarea",method=RequestMethod.GET)
 	public Map<String, Object>listArea(){
+		looger.info("项目启动");
+		long startTime = System.currentTimeMillis();
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Area> list = new ArrayList<Area>();
 		try {
 			list=areaService.getAreaList();
 		}catch(Exception e) {
 			e.printStackTrace();
+			looger.error(e.toString());
 			map.put("success", false);
 			map.put("errorMessage", e.toString());
 		}
 		map.put("rows", list);
 		map.put("total",list.size());
+		long endTime = System.currentTimeMillis();
+		looger.debug("项目执行时间：[{}ms]",endTime-startTime);
+		looger.info("项目结束");
 		return map;
 	}
 }
