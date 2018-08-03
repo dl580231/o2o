@@ -1,3 +1,12 @@
-2018-08-216 02:04:46:046 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==>  Preparing: update tb_shop SET phone=? where shop_id=? 
-2018-08-216 02:04:46:046 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==> Parameters: 18434926968(String), 36(Long)
-2018-08-216 02:04:46:046 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - <==    Updates: 1
+2018-08-216 04:02:18:018 [main] DEBUG com.nuc.o2o.dao.AreaDao.queryArea - ==>  Preparing: select * from tb_area order by priority DESC 
+2018-08-216 04:02:18:018 [main] DEBUG com.nuc.o2o.dao.AreaDao.queryArea - ==> Parameters: 
+2018-08-216 04:02:18:018 [main] DEBUG com.nuc.o2o.dao.AreaDao.queryArea - <==      Total: 2
+2018-08-216 04:02:18:018 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==>  Preparing: update tb_shop SET phone=? where shop_id=? 
+2018-08-216 04:02:18:018 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==> Parameters: 18434926968(String), 36(Long)
+2018-08-216 04:02:18:018 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - <==    Updates: 1
+2018-08-216 04:02:40:040 [main] DEBUG com.nuc.o2o.dao.AreaDao.queryArea - ==>  Preparing: select * from tb_area order by priority DESC 
+2018-08-216 04:02:40:040 [main] DEBUG com.nuc.o2o.dao.AreaDao.queryArea - ==> Parameters: 
+2018-08-216 04:02:40:040 [main] DEBUG com.nuc.o2o.dao.AreaDao.queryArea - <==      Total: 2
+2018-08-216 04:02:40:040 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==>  Preparing: update tb_shop SET phone=? where shop_id=? 
+2018-08-216 04:02:40:040 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==> Parameters: 18434926968(String), 36(Long)
+2018-08-216 04:02:40:040 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - <==    Updates: 1

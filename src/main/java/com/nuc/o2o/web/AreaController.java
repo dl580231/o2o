@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.management.loading.PrivateClassLoader;
-
-import org.eclipse.jdt.internal.compiler.ast.ThisReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nuc.o2o.entity.Area;
 import com.nuc.o2o.service.AreaService;
+
 
 @Controller
 @RequestMapping("/superadmin")
@@ -47,5 +44,6 @@ public class AreaController {
 		looger.debug("项目执行时间：[{}ms]",endTime-startTime);
 		looger.info("项目结束");
 		return map;
+		
 	}
 }
