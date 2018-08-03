@@ -1,0 +1,3 @@
+2018-08-216 02:04:46:046 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==>  Preparing: update tb_shop SET phone=? where shop_id=? 
+2018-08-216 02:04:46:046 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==> Parameters: 18434926968(String), 36(Long)
+2018-08-216 02:04:46:046 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - <==    Updates: 1
