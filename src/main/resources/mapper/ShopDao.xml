@@ -16,7 +16,7 @@
  			<if test="shopDesc!=null">shop_desc=#{shopDesc},</if>
  			<if test="shopAddr!=null">shop_addr=#{shopAddr},</if>
  			<if test="phone!=null">phone=#{phone},</if>
- 			<if test="shopImg!=null">shop_imag=#{shopImg},</if>
+ 			<if test="shopImg!=null">shop_img=#{shopImg},</if>
  			<if test="priority!=null">priority=#{priority},</if>
  			<if test="lastEditTime!=null">last_edit_time=#{lastEditTime},</if>
  			<if test="enableStatus!=null">enable_status=#{enableStatus},</if>

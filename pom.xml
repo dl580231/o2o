@@ -11,6 +11,7 @@
 		<spring.version>4.3.7.RELEASE</spring.version>
 	</properties>
 	<dependencies>
+	
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 		    <groupId>junit</groupId>
@@ -117,6 +118,14 @@
 			<artifactId>c3p0</artifactId>
 			<version>0.9.1.2</version>
 		</dependency>
+		<!-- 图片处理 -->
+		<!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
+		<dependency>
+		    <groupId>net.coobird</groupId>
+		    <artifactId>thumbnailator</artifactId>
+		    <version>0.4.8</version>
+		</dependency>
+		
 	</dependencies>
 	<build>
 		<finalName>o2o</finalName>

@@ -1,12 +1,6 @@
-2018-08-216 04:02:18:018 [main] DEBUG com.nuc.o2o.dao.AreaDao.queryArea - ==>  Preparing: select * from tb_area order by priority DESC 
-2018-08-216 04:02:18:018 [main] DEBUG com.nuc.o2o.dao.AreaDao.queryArea - ==> Parameters: 
-2018-08-216 04:02:18:018 [main] DEBUG com.nuc.o2o.dao.AreaDao.queryArea - <==      Total: 2
-2018-08-216 04:02:18:018 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==>  Preparing: update tb_shop SET phone=? where shop_id=? 
-2018-08-216 04:02:18:018 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==> Parameters: 18434926968(String), 36(Long)
-2018-08-216 04:02:18:018 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - <==    Updates: 1
-2018-08-216 04:02:40:040 [main] DEBUG com.nuc.o2o.dao.AreaDao.queryArea - ==>  Preparing: select * from tb_area order by priority DESC 
-2018-08-216 04:02:40:040 [main] DEBUG com.nuc.o2o.dao.AreaDao.queryArea - ==> Parameters: 
-2018-08-216 04:02:40:040 [main] DEBUG com.nuc.o2o.dao.AreaDao.queryArea - <==      Total: 2
-2018-08-216 04:02:40:040 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==>  Preparing: update tb_shop SET phone=? where shop_id=? 
-2018-08-216 04:02:40:040 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==> Parameters: 18434926968(String), 36(Long)
-2018-08-216 04:02:40:040 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - <==    Updates: 1
+2018-08-222 02:30:22:022 [main] DEBUG com.nuc.o2o.dao.ShopDao.insertShop - ==>  Preparing: insert into tb_shop(shop_name,shop_desc,shop_addr,phone,shop_img,priority,create_time,last_edit_time,enable_status,advice, area_id,owner_id,shop_category_id) values(?,?,?,?,?,?,?,?,?,?,?,?,?) 
+2018-08-222 02:30:22:022 [main] DEBUG com.nuc.o2o.dao.ShopDao.insertShop - ==> Parameters: 来一杯橙汁(String), 一杯喝了，永葆青春(String), 文瀛13(String), 18235105722(String), test橙汁(String), 11(Integer), 2018-08-10 02:30:22.701(Timestamp), 2018-08-10 02:30:22.701(Timestamp), 0(Integer), 审核中(String), 2(Integer), 1(Long), 12(Long)
+2018-08-222 02:30:22:022 [main] DEBUG com.nuc.o2o.dao.ShopDao.insertShop - <==    Updates: 1
+2018-08-222 02:30:23:023 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==>  Preparing: update tb_shop SET shop_name=?, shop_desc=?, shop_addr=?, phone=?, shop_img=?, priority=?, last_edit_time=?, enable_status=?, advice=?, area_id=?, shop_category_id=? where shop_id=? 
+2018-08-222 02:30:23:023 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==> Parameters: 来一杯橙汁(String), 一杯喝了，永葆青春(String), 文瀛13(String), 18235105722(String), F:\ssm整合项目\image\\uplod\item\shop\49\201808100230221588.jpg(String), 11(Integer), 2018-08-10 02:30:22.701(Timestamp), 0(Integer), 审核中(String), 2(Integer), 12(Long), 49(Long)
+2018-08-222 02:30:24:024 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - <==    Updates: 1
