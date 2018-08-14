@@ -8,6 +8,8 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 
@@ -16,11 +18,11 @@ public class ImageUtils {
 	private static Random random = new Random();
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
 
-	public static String generateThumbnail(File thumbnail, String targetAddr) throws IOException {
+	public static String generateThumbnail(CommonsMultipartFile thumbnail, String targetAddr) throws IOException {
 		// 生成图片随机名称
 		String realFileName = getRandomFileName();
 		// 获得图片的扩展名
-		String extension = getFileExtension(thumbnail);
+		String extension = getFileExtension(thumbnail.getOriginalFilename());
 		// 当传入的目标路径不存在时，手动创建目录
 		mkdir(targetAddr);
 		// 生成相对路径
@@ -28,7 +30,7 @@ public class ImageUtils {
 		// 绝对路径
 		String absolutePath = PathUtils.getImageBasePath() + relativeAddr;
 		File destFile = new File(absolutePath);
-		Thumbnails.of(thumbnail).size(200, 200)
+		Thumbnails.of(thumbnail.getInputStream()).size(200, 200)
 				.watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "/watermark.jpg")), 0.25f)
 				.outputQuality(0.8f).toFile(destFile);
 		return absolutePath;
@@ -55,6 +57,10 @@ public class ImageUtils {
 	private static String getFileExtension(File thumbnail) {
 		String originalFilename = thumbnail.getPath();
 		String extension = originalFilename.substring(originalFilename.indexOf("."));
+		return extension;
+	}
+	private static String getFileExtension(String thumbnail) {
+		String extension = thumbnail.substring(thumbnail.indexOf("."));
 		return extension;
 	}
 

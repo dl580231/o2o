@@ -40,7 +40,7 @@ public class ShopServiceTest extends BaseTest {
 		shop.setAdvice("审核中");
 		File imageFile = new File("C:\\Users\\lenovo\\Desktop\\img\\family.jpg");
 		// 调用service
-		ShopExecution shopExecution = shopService.addShop(shop, imageFile);
-		Assert.assertEquals(ShopStateEnum.CHECK.getState(), shopExecution.getShopStateEnum().getState());
-	}
+		/*ShopExecution shopExecution = shopService.addShop(shop, imageFile);*/
+/*		Assert.assertEquals(ShopStateEnum.CHECK.getState(), shopExecution.getShopStateEnum().getState());
+*/	}
 }
