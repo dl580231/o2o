@@ -8,9 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -18,12 +21,14 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nuc.o2o.dto.ShopExecution;
 import com.nuc.o2o.entity.Area;
+import com.nuc.o2o.entity.PersonInfo;
 import com.nuc.o2o.entity.Shop;
 import com.nuc.o2o.entity.ShopCategory;
 import com.nuc.o2o.enums.ShopStateEnum;
 import com.nuc.o2o.service.AreaService;
 import com.nuc.o2o.service.ShopCategoryService;
 import com.nuc.o2o.service.ShopService;
+import com.nuc.o2o.utils.CodeUtils;
 
 @Controller
 @RequestMapping("shopadmin")
@@ -35,10 +40,15 @@ public class ShopManagementController {
 	@Autowired
 	private AreaService areaService;
 
-	@RequestMapping(value="getshopinitinfo",method=RequestMethod.GET)
+	@RequestMapping(value = "getshopinitinfo", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getShopInitInfo(){
-		Map<String, Object> modelMap=new HashMap<>();
+	/**
+	 * 获取店铺区域和类别信息填充前端页面
+	 * 
+	 * @return model(json)
+	 */
+	public Map<String, Object> getShopInitInfo() {
+		Map<String, Object> modelMap = new HashMap<>();
 		try {
 			List<Area> areaList = areaService.getAreaList();
 			List<ShopCategory> shopCategoryList = shopCategoryService.getShopCategory(new ShopCategory());
@@ -51,19 +61,30 @@ public class ShopManagementController {
 		}
 		return modelMap;
 	}
-	
-	@RequestMapping(value = "shopRegister", method = RequestMethod.POST)
+
+	@RequestMapping(value = "shopregister", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> shopRegister(HttpServletRequest request) {
-		// 1.处理前端传来的参数
+	public Map<String, Object> shopRegister(HttpServletRequest request,
+			@RequestParam("shopImg") CommonsMultipartFile shopImg) {
 		Map<String, Object> model = new HashMap<String, Object>();
-		CommonsMultipartFile shopImg = null;
-		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
-				request.getSession().getServletContext());
-		if (commonsMultipartResolver.isMultipart(request)) {
-			MultipartHttpServletRequest httpServletRequest = (MultipartHttpServletRequest) request;
-			shopImg = (CommonsMultipartFile) httpServletRequest.getFile("shopImg");
-		} else {
+		// 0.判断验证码
+		boolean verifyCodeResult = CodeUtils.checkVerifyCode(request);
+		if (!verifyCodeResult) {
+			model.put("success", false);
+			model.put("errorMsg", "验证码输入错误");
+			return model;
+		}
+		// 1.处理前端传来的参数
+		/*
+		 * CommonsMultipartFile shopImg = null; CommonsMultipartResolver
+		 * commonsMultipartResolver = new CommonsMultipartResolver(
+		 * request.getSession().getServletContext()); if
+		 * (commonsMultipartResolver.isMultipart(request)) { MultipartHttpServletRequest
+		 * httpServletRequest = (MultipartHttpServletRequest) request; shopImg =
+		 * (CommonsMultipartFile) httpServletRequest.getFile("shopImg"); } else {
+		 * model.put("success", false); model.put("errorMsg", "图片文件失效"); return model; }
+		 */
+		if (shopImg == null) {
 			model.put("success", false);
 			model.put("errorMsg", "图片文件失效");
 			return model;
@@ -78,6 +99,10 @@ public class ShopManagementController {
 			model.put("errorMsg", "shop信息转换失效");
 			return model;
 		}
+		// 获取个人信息之后要用session做
+		PersonInfo owner = new PersonInfo();
+		owner.setUserId(1L);
+		shop.setOwner(owner);
 		// 2.调用service层向数据库插入店铺信息
 		if (shop == null || shopImg == null) {
 			model.put("success", false);

@@ -48,8 +48,8 @@ public class ShopServiceImpl implements ShopService {
 				if (imageFile != null) {
 					// 获取店铺图片存储的路径
 					String imagStorePath = PathUtils.getShopImagPath(shop.getShopId());
-					String shopImag = ImageUtils.generateThumbnail(imageFile, imagStorePath);
-					shop.setShopImg(shopImag);
+					String shopImagAddr = ImageUtils.generateThumbnail(imageFile, imagStorePath);
+					shop.setShopImg(shopImagAddr);
 				}
 			} catch (Exception e) {
 				throw new ShopOperationException("store shopImag to service error" + e.getMessage());
