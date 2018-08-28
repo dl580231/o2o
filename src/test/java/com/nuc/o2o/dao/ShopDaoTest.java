@@ -47,11 +47,19 @@ public class ShopDaoTest extends BaseTest{
 	}
 	
 	@Test
+	@Ignore
 	public void updateShopTest() {
 		Shop shop = new Shop();
 		shop.setPhone("18434926968");
 		shop.setShopId(36l);
 		int result = shopDao.updateShop(shop);
 		assertEquals(1,result);
+	}
+	
+	@Test
+	public void queryShoById() {
+		Shop shop = shopDao.queryShopById(29L);
+		System.out.println(shop.getArea().getAreaName());
+		System.out.println(shop.getShopCategory().getShopCategoryName());
 	}
 }

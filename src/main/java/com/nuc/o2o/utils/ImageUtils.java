@@ -75,10 +75,27 @@ public class ImageUtils {
 		return date + num;
 	}
 	
+	/**
+	 * 删除传来的文件或目录
+	 * @param imgFile
+	 */
+	public static void deleteFileOrPath(String imgPath) {
+		File fileOrPath = new File(imgPath);
+		if(fileOrPath.exists()) {
+			if(fileOrPath.isDirectory()) {
+				File[] files = fileOrPath.listFiles();
+				for (File file:files) {
+					file.delete();
+				}
+			}
+			fileOrPath.delete();
+		}
+	}
 	//单元测试
 	public static void main(String args[]) throws IOException {
-		Thumbnails.of(new File("C:\\Users\\lenovo\\Desktop\\img\\sunzi.jpg")).size(1000, 1000)
+		/*Thumbnails.of(new File("C:\\Users\\lenovo\\Desktop\\img\\sunzi.jpg")).size(1000, 1000)
 				.watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "/watermark.jpg")), 0.25f)
-				.outputQuality(0.8f).toFile(new File("C:\\Users\\lenovo\\Desktop\\img\\sunzis.jpg"));
+				.outputQuality(0.8f).toFile(new File("C:\\Users\\lenovo\\Desktop\\img\\sunzis.jpg"));*/
+		ImageUtils.deleteFileOrPath("F:\\ssm整合项目\\image\\uplod\\item\\shop\\42");
 	}
 }

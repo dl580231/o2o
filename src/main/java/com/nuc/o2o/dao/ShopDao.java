@@ -14,4 +14,10 @@ public interface ShopDao {
 	 * @return 店铺修改成功与否的结果：1.成功；-1.失败
 	 */
 	public int updateShop(Shop shop);
+	/**
+	 * 根据id返回店铺信息
+	 * @param shopId
+	 * @return Shop
+	 */
+	public Shop queryShopById(Long shopId);
 }

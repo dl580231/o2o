@@ -2,7 +2,7 @@ package com.nuc.o2o.enums;
 
 public enum ShopStateEnum {
 	ILLEGAL(-1, "非法店铺"), CHECK(0, "审核中"), SUCCESS(1, "合法店铺"),
-	NULL_SHOP(-1001,"shop信息为空");
+	NULL_SHOP(-1001,"shop信息为空"),INNER_ERROR(-1002,"内部错误");
 
 	private Integer state;
 	private String stateInfo;

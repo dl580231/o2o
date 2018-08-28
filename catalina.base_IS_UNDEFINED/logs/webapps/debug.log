@@ -1,3 +1,3 @@
-2018-08-233 00:41:30:030 [main] DEBUG com.nuc.o2o.dao.ShopCategoryDao.queryShopCategory - ==>  Preparing: select * from tb_shop_category WHERE parent_id=? order by priority desc 
-2018-08-233 00:41:30:030 [main] DEBUG com.nuc.o2o.dao.ShopCategoryDao.queryShopCategory - ==> Parameters: 12(Long)
-2018-08-233 00:41:30:030 [main] DEBUG com.nuc.o2o.dao.ShopCategoryDao.queryShopCategory - <==      Total: 5
+2018-08-240 20:24:11:011 [main] DEBUG com.nuc.o2o.dao.ShopDao.queryShopById - ==>  Preparing: select shop_id,shop_name,shop_desc,shop_addr,phone,shop_img,s.create_time,s.last_edit_time,advice,s.area_id,area_name,s.shop_category_id,shop_category_name from tb_shop s,tb_area a,tb_shop_category sc where s.area_id=a.area_id and s.shop_category_id=sc.shop_category_id and s.shop_id=? 
+2018-08-240 20:24:11:011 [main] DEBUG com.nuc.o2o.dao.ShopDao.queryShopById - ==> Parameters: 29(Long)
+2018-08-240 20:24:11:011 [main] DEBUG com.nuc.o2o.dao.ShopDao.queryShopById - <==      Total: 1

@@ -1,5 +1,6 @@
 package com.nuc.o2o.service.serviceImpl;
 
+import java.io.IOException;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +47,7 @@ public class ShopServiceImpl implements ShopService {
 			try {
 				// 获取shopId，生成图片名称，将图片存到服务器，将图片路径信息存储到shop中
 				if (imageFile != null) {
-					// 获取店铺图片存储的路径
-					String imagStorePath = PathUtils.getShopImagPath(shop.getShopId());
-					String shopImagAddr = ImageUtils.generateThumbnail(imageFile, imagStorePath);
-					shop.setShopImg(shopImagAddr);
+					addShopImg(shop, imageFile);
 				}
 			} catch (Exception e) {
 				throw new ShopOperationException("store shopImag to service error" + e.getMessage());
@@ -64,6 +62,49 @@ public class ShopServiceImpl implements ShopService {
 			throw new ShopOperationException("add shop erro " + e.getMessage());
 		}
 		return new ShopExecution(ShopStateEnum.CHECK, shop);
+	}
+
+	public void addShopImg(Shop shop, CommonsMultipartFile imageFile) throws IOException {
+		// 获取店铺图片存储的路径
+		String imagStorePath = PathUtils.getShopImagPath(shop.getShopId());
+		String shopImagAddr = ImageUtils.generateThumbnail(imageFile, imagStorePath);
+		shop.setShopImg(shopImagAddr);
+	}
+
+	@Override
+	public Shop getShopById(Long shopId) {
+		return shopDao.queryShopById(shopId);
+	}
+
+	
+	@Override
+	public ShopExecution modifyShopInfo(Shop shop, CommonsMultipartFile imgFile) {
+		// 1.判断是否修改图片
+		if (imgFile != null) {
+			Shop tempShop = shopDao.queryShopById(shop.getShopId());
+			ImageUtils.deleteFileOrPath(shop.getShopImg());
+			try {
+				addShopImg(tempShop, imgFile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		// 2.执行修改操作
+		try {
+			if (shop != null || !shop.getShopId().equals("")) {
+				int result = shopDao.updateShop(shop);
+				if (result <= 0) {
+					return new ShopExecution(ShopStateEnum.INNER_ERROR);
+				}
+				shop = getShopById(shop.getShopId());
+				return new ShopExecution(ShopStateEnum.SUCCESS, shop);
+			} else {
+				return new ShopExecution(ShopStateEnum.NULL_SHOP);
+			}
+		} catch (Exception e) {
+			throw new ShopOperationException("moidify shop error" + e.getMessage());
+		}
 	}
 
 }

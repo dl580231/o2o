@@ -3,10 +3,12 @@ package com.nuc.o2o.service;
 import java.io.File;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nuc.o2o.BaseTest;
+import com.nuc.o2o.dao.ShopDao;
 import com.nuc.o2o.dto.ShopExecution;
 import com.nuc.o2o.entity.Area;
 import com.nuc.o2o.entity.PersonInfo;
@@ -18,6 +20,7 @@ public class ShopServiceTest extends BaseTest {
 	@Autowired
 	private ShopService shopService;
 
+	@Ignore
 	@Test
 	public void addShopTest() {
 		// 编辑shop和image文件基础信息
@@ -43,4 +46,8 @@ public class ShopServiceTest extends BaseTest {
 		/*ShopExecution shopExecution = shopService.addShop(shop, imageFile);*/
 /*		Assert.assertEquals(ShopStateEnum.CHECK.getState(), shopExecution.getShopStateEnum().getState());
 */	}
+	
+	public void modifyShop() {
+		ShopService.
+	}
 }
