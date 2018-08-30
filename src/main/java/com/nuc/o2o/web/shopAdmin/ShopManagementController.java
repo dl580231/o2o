@@ -1,5 +1,6 @@
 package com.nuc.o2o.web.shopAdmin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,15 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nuc.o2o.dto.ShopExecution;
@@ -40,13 +38,89 @@ public class ShopManagementController {
 	@Autowired
 	private AreaService areaService;
 
-	@RequestMapping(value = "getshopinitinfo", method = RequestMethod.GET)
+	/**
+	 * 根据表单传来的信息修改店铺信息
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "modifyshopinfo", method = RequestMethod.POST)
+	public Map<String, Object> modifyShopInfo(HttpServletRequest request,
+			@RequestParam("shopImg") CommonsMultipartFile shopImg) {
+		Map<String, Object> model = new HashMap<String, Object>();
+		// 0.判断验证码
+		boolean verifyCodeResult = CodeUtils.checkVerifyCode(request);
+		if (!verifyCodeResult) {
+			model.put("success", false);
+			model.put("errorMsg", "验证码输入错误,请重新输入验证码");
+			return model;
+		}
+		// 1.处理前端传来的参数
+		String shopInfo = request.getParameter("shopInfo");
+		ObjectMapper mapper = new ObjectMapper();
+		Shop shop = null;
+		try {
+			shop = (Shop) mapper.readValue(shopInfo, Shop.class);
+		} catch (Exception e) {
+			model.put("success", "false");
+			model.put("errorMsg", "shop信息转换失效");
+			return model;
+		}
+		// 2.调用service层修改店铺信息
+		if (shop == null || shopImg == null) {
+			model.put("success", false);
+			model.put("errorMsg", "shop信息或图片为空");
+			return model;
+		} else {
+			try {
+				ShopExecution shopExecution = shopService.modifyShopInfo(shop, shopImg);
+				if (shopExecution.getShopStateEnum().getState() == ShopStateEnum.SUCCESS.getState()) {
+					model.put("success", true);
+				} else {
+					model.put("success", false);
+					model.put("errorMsg", "店铺信息修改失败");
+				}
+			} catch (Exception e) {
+				model.put("success", false);
+				model.put("errorMsg", "修改店铺信息失败" + e.getMessage());
+				return model;
+			}
+			// 3.返回结果
+			return model;
+		}
+	}
+
+	/**
+	 * 根据shopId返回shop信息和列表信息，用于渲染用户修改店铺信息的页面
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "getshopinfobyid/{shopId}", method = RequestMethod.GET)
 	@ResponseBody
+	public Map<String, Object> getShopInfoById(@PathVariable Long shopId) {
+		Map<String, Object> model = new HashMap<>();
+		Shop shop = null;
+		try {
+			List<Area> areaList = areaService.getAreaList();
+			shop = shopService.getShopById(shopId);
+			model.put("success", true);
+			model.put("shop", shop);
+			model.put("areaList", areaList);
+		} catch (Exception e) {
+			model.put("shopInfo", shop);
+			model.put("errorMsg", "获取店铺信息失败" + e.getMessage());
+		}
+		return model;
+	}
+
 	/**
 	 * 获取店铺区域和类别信息填充前端页面
 	 * 
 	 * @return model(json)
 	 */
+	@RequestMapping(value = "getshopinitinfo", method = RequestMethod.GET)
+	@ResponseBody
 	public Map<String, Object> getShopInitInfo() {
 		Map<String, Object> modelMap = new HashMap<>();
 		try {
@@ -62,6 +136,13 @@ public class ShopManagementController {
 		return modelMap;
 	}
 
+	/**
+	 * 根据表单信息进行店铺注册
+	 * 
+	 * @param request
+	 * @param shopImg
+	 * @return
+	 */
 	@RequestMapping(value = "shopregister", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> shopRegister(HttpServletRequest request,
@@ -100,8 +181,7 @@ public class ShopManagementController {
 			return model;
 		}
 		// 获取个人信息之后要用session做
-		PersonInfo owner = new PersonInfo();
-		owner.setUserId(1L);
+		PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
 		shop.setOwner(owner);
 		// 2.调用service层向数据库插入店铺信息
 		if (shop == null || shopImg == null) {
@@ -113,6 +193,12 @@ public class ShopManagementController {
 				ShopExecution shopExecution = shopService.addShop(shop, shopImg);
 				if (shopExecution.getShopStateEnum().getState() == ShopStateEnum.CHECK.getState()) {
 					model.put("success", true);
+					List<Shop> shopList = (List<Shop>) request.getSession().getAttribute("shopList");
+					if (shopList == null) {
+						shopList = new ArrayList<Shop>();
+					}
+					shopList.add(shopExecution.getShop());
+					request.getSession().setAttribute("shopList", shopList);
 				} else {
 					model.put("success", false);
 					model.put("errorMsg", ShopStateEnum.CHECK.getStateInfo());
