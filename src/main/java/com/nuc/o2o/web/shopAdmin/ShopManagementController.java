@@ -9,12 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nuc.o2o.dto.ShopExecution;
@@ -29,7 +28,7 @@ import com.nuc.o2o.service.ShopService;
 import com.nuc.o2o.utils.CodeUtils;
 
 @Controller
-@RequestMapping("shopadmin")
+@RequestMapping("/shopadmin")
 public class ShopManagementController {
 	@Autowired
 	private ShopService shopService;
@@ -44,9 +43,9 @@ public class ShopManagementController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "modifyshopinfo", method = RequestMethod.POST)
+	@RequestMapping(value = "/modifyshopinfo", method = RequestMethod.POST)
 	public Map<String, Object> modifyShopInfo(HttpServletRequest request,
-			@RequestParam("shopImg") CommonsMultipartFile shopImg) {
+			@RequestParam("shopImg") MultipartFile shopImg) {
 		Map<String, Object> model = new HashMap<String, Object>();
 		// 0.判断验证码
 		boolean verifyCodeResult = CodeUtils.checkVerifyCode(request);
@@ -67,9 +66,9 @@ public class ShopManagementController {
 			return model;
 		}
 		// 2.调用service层修改店铺信息
-		if (shop == null || shopImg == null) {
+		if (shop == null) {
 			model.put("success", false);
-			model.put("errorMsg", "shop信息或图片为空");
+			model.put("errorMsg", "shop信息为空");
 			return model;
 		} else {
 			try {
@@ -96,9 +95,9 @@ public class ShopManagementController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "getshopinfobyid/{shopId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getshopinfobyid", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getShopInfoById(@PathVariable Long shopId) {
+	public Map<String, Object> getShopInfoById(@RequestParam("shopId") Long shopId) {
 		Map<String, Object> model = new HashMap<>();
 		Shop shop = null;
 		try {
@@ -119,7 +118,7 @@ public class ShopManagementController {
 	 * 
 	 * @return model(json)
 	 */
-	@RequestMapping(value = "getshopinitinfo", method = RequestMethod.GET)
+	@RequestMapping(value = "/getshopinitinfo", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getShopInitInfo() {
 		Map<String, Object> modelMap = new HashMap<>();
@@ -143,10 +142,10 @@ public class ShopManagementController {
 	 * @param shopImg
 	 * @return
 	 */
-	@RequestMapping(value = "shopregister", method = RequestMethod.POST)
+	@RequestMapping(value = "/shopregister", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> shopRegister(HttpServletRequest request,
-			@RequestParam("shopImg") CommonsMultipartFile shopImg) {
+			@RequestParam("shopImg") MultipartFile shopImg) {
 		Map<String, Object> model = new HashMap<String, Object>();
 		// 0.判断验证码
 		boolean verifyCodeResult = CodeUtils.checkVerifyCode(request);
@@ -157,12 +156,11 @@ public class ShopManagementController {
 		}
 		// 1.处理前端传来的参数
 		/*
-		 * CommonsMultipartFile shopImg = null; CommonsMultipartResolver
-		 * commonsMultipartResolver = new CommonsMultipartResolver(
-		 * request.getSession().getServletContext()); if
-		 * (commonsMultipartResolver.isMultipart(request)) { MultipartHttpServletRequest
+		 * MultipartFile shopImg = null; MultipartResolver MultipartResolver = new
+		 * MultipartResolver( request.getSession().getServletContext()); if
+		 * (MultipartResolver.isMultipart(request)) { MultipartHttpServletRequest
 		 * httpServletRequest = (MultipartHttpServletRequest) request; shopImg =
-		 * (CommonsMultipartFile) httpServletRequest.getFile("shopImg"); } else {
+		 * (MultipartFile) httpServletRequest.getFile("shopImg"); } else {
 		 * model.put("success", false); model.put("errorMsg", "图片文件失效"); return model; }
 		 */
 		if (shopImg == null) {

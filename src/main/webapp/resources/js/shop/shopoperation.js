@@ -3,14 +3,13 @@
  */
 $(function() {
 	var shopId = getQueryString('shopId');
-	// 判断是注册还是编辑页
-	var isEdit = false;
+	var isEdit = shopId ? true : false;
 	// 用于店铺注册时候的店铺类别以及区域列表的初始化的URL
 	var initUrl = '/o2o/shopadmin/getshopinitinfo';
 	// 注册店铺的URL
 	var registerShopUrl = '/o2o/shopadmin/shopregister';
 	// 获得制定shopId店铺信息的URL
-	var shopInfoUrl = 'o2o/shopadmin/getshopinfobyid?shopId=' + shopId;
+	var shopInfoUrl = '/o2o/shopadmin/getshopinfobyid?shopId=' + shopId;
 	// 修改店铺信息的URL
 	var modifyUrl = '/o2o/shopadmin/modifyshopinfo'
 	// 取得所有二级店铺类别以及区域信息，并分别赋值进类别列表以及区域列表
@@ -19,12 +18,14 @@ $(function() {
 	}else{
 		getShopInitInfo();
 	}
+	
 	function getShopInfoById(){
 		$.getJSON(shopInfoUrl, function(data) {
 			if (data.success) {
 				var tempHtml = '';
 				var tempAreaHtml = '';
-				tempHtml += '<option data-id="' + shop.shopCatrgory.shopCategoryId
+				var shop=data.shop;
+				tempHtml += '<option data-id="' + shop.shopCategory.shopCategoryId
 							+ '">' + shop.shopCategory.shopCategoryName + '</option>';
 				data.areaList.map(function(item, index) {
 					tempAreaHtml += '<option data-id="' + item.areaId + '">'
@@ -33,14 +34,15 @@ $(function() {
 				$('#shop-category').html(tempHtml);
 				$('#shop-category').attr("disabled","disabled")
 				$('#shop-area').html(tempAreaHtml);
-				$('#shop-area option[data-id="' + shop.shopCatrgory.shopCategoryId]).attr("selected","selected")
-				$('#shop-name').val()=shop.shopName;
-				$('#shop-addr').val()=shop.shopAddr;
-				$('#shop-phone').val()=shop.phone;
-				$('#shop-desc').val()=shop.shopDesc;
+				$('#shop-area[data-id="' + shop.area.areaId+']').attr("selected","selected")
+				$('#shop-name').val(shop.shopName);
+				$('#shop-addr').val(shop.shopAddr);
+				$('#shop-phone').val(shop.phone);
+				$('#shop-desc').val(shop.shopDesc);
 			}
 		});
 	}
+	
 	function getShopInitInfo() {
 		$.getJSON(initUrl, function(data) {
 			if (data.success) {
@@ -71,9 +73,6 @@ $(function() {
 		// 创建shop对象
 		var shop = {};
 		// 获取表单里的数据并填充进对应的店铺属性中
-		if(isEdit){
-			shop.shopId=shopId;
-		}
 		shop.shopName = $('#shop-name').val();
 		shop.shopAddr = $('#shop-addr').val();
 		shop.phone = $('#shop-phone').val();
@@ -90,6 +89,9 @@ $(function() {
 				return !this.selected;
 			}).data('id')
 		};
+		if(isEdit){
+			shop.shopId=shopId;
+		}
 		// 获取上传的图片文件流
 		var shopImg = $('#shop-img')[0].files[0];
 		// 生成表单对象，用于接收参数并传递给后台
@@ -102,7 +104,7 @@ $(function() {
 		formData.append('verifyCode', verifyCode);
 		// 将数据提交至后台处理相关操作
 		$.ajax({
-			url : (isEdit?modifyshopinfo:registerShopUrl),
+			url : (isEdit?modifyUrl:registerShopUrl),
 			type : 'POST',
 			data : formData,
 			contentType : false,
@@ -119,5 +121,6 @@ $(function() {
 			}
 		});
 	});
+	
 
 })
