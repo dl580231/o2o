@@ -1,20 +1,21 @@
 package com.nuc.o2o.service;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 
 import com.nuc.o2o.BaseTest;
-import com.nuc.o2o.dao.ShopDao;
 import com.nuc.o2o.dto.ShopExecution;
 import com.nuc.o2o.entity.Area;
 import com.nuc.o2o.entity.PersonInfo;
 import com.nuc.o2o.entity.Shop;
 import com.nuc.o2o.entity.ShopCategory;
-import com.nuc.o2o.enums.ShopStateEnum;
 
 public class ShopServiceTest extends BaseTest {
 	@Autowired
@@ -47,7 +48,16 @@ public class ShopServiceTest extends BaseTest {
 /*		Assert.assertEquals(ShopStateEnum.CHECK.getState(), shopExecution.getShopStateEnum().getState());
 */	}
 	
-	public void modifyShop() {
-		ShopService.
+	@Test
+	public void modifyShop() throws FileNotFoundException, IOException {
+		Shop shop = new Shop();
+		shop.setShopId(49l);
+		shop.setShopName("再次修改");
+		/*ShopExecution shopInfo = shopService.modifyShopInfo(shop, null);
+		System.out.println(shopInfo.getShop().getShopName());*/
+		File file = new File("C:\\Users\\lenovo\\Desktop\\img\\family.jpg");
+		MockMultipartFile multipartFile = new MockMultipartFile(file.getName(),file.getName(),null,new FileInputStream(file));
+		ShopExecution info = shopService.modifyShopInfo(shop, multipartFile);
+		System.out.println(info.getShop().getShopImg());
 	}
 }

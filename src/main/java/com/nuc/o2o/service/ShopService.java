@@ -1,6 +1,6 @@
 package com.nuc.o2o.service;
 
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nuc.o2o.dto.ShopExecution;
 import com.nuc.o2o.entity.Shop;
@@ -12,7 +12,7 @@ public interface ShopService {
 	 * @param imageFile
 	 * @return
 	 */
-	public ShopExecution addShop(Shop shop,CommonsMultipartFile imageFile);
+	public ShopExecution addShop(Shop shop,MultipartFile imageFile);
 	
 	/**
 	 * 根据店铺ID返回店铺信息
@@ -27,5 +27,5 @@ public interface ShopService {
 	 * @param imgFile
 	 * @return
 	 */
-	public ShopExecution modifyShopInfo(Shop shop,CommonsMultipartFile imgFile);
+	public ShopExecution modifyShopInfo(Shop shop,MultipartFile imgFile);
 }

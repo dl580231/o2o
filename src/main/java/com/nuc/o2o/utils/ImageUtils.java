@@ -8,7 +8,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
@@ -18,7 +18,7 @@ public class ImageUtils {
 	private static Random random = new Random();
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
 
-	public static String generateThumbnail(CommonsMultipartFile thumbnail, String targetAddr) throws IOException {
+	public static String generateThumbnail(MultipartFile thumbnail, String targetAddr) throws IOException {
 		// 生成图片随机名称
 		String realFileName = getRandomFileName();
 		// 获得图片的扩展名
@@ -80,6 +80,9 @@ public class ImageUtils {
 	 * @param imgFile
 	 */
 	public static void deleteFileOrPath(String imgPath) {
+		if(imgPath == null) {
+			return;
+		}
 		File fileOrPath = new File(imgPath);
 		if(fileOrPath.exists()) {
 			if(fileOrPath.isDirectory()) {
@@ -96,6 +99,6 @@ public class ImageUtils {
 		/*Thumbnails.of(new File("C:\\Users\\lenovo\\Desktop\\img\\sunzi.jpg")).size(1000, 1000)
 				.watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "/watermark.jpg")), 0.25f)
 				.outputQuality(0.8f).toFile(new File("C:\\Users\\lenovo\\Desktop\\img\\sunzis.jpg"));*/
-		ImageUtils.deleteFileOrPath("F:\\ssm整合项目\\image\\uplod\\item\\shop\\42");
+		ImageUtils.deleteFileOrPath("F:\\ssm整合项目\\image\\uplod\\item\\shop\\43");
 	}
 }

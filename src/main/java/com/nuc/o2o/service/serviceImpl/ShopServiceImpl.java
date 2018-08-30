@@ -6,7 +6,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nuc.o2o.dao.ShopDao;
 import com.nuc.o2o.dto.ShopExecution;
@@ -24,7 +24,7 @@ public class ShopServiceImpl implements ShopService {
 	private ShopDao shopDao;
 
 	@Override
-	public ShopExecution addShop(Shop shop, CommonsMultipartFile imageFile) {
+	public ShopExecution addShop(Shop shop, MultipartFile imageFile) {
 
 		try {
 			// 1.判断shop是否为空
@@ -64,7 +64,7 @@ public class ShopServiceImpl implements ShopService {
 		return new ShopExecution(ShopStateEnum.CHECK, shop);
 	}
 
-	public void addShopImg(Shop shop, CommonsMultipartFile imageFile) throws IOException {
+	public void addShopImg(Shop shop, MultipartFile imageFile) throws IOException {
 		// 获取店铺图片存储的路径
 		String imagStorePath = PathUtils.getShopImagPath(shop.getShopId());
 		String shopImagAddr = ImageUtils.generateThumbnail(imageFile, imagStorePath);
@@ -76,15 +76,18 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.queryShopById(shopId);
 	}
 
-	
 	@Override
-	public ShopExecution modifyShopInfo(Shop shop, CommonsMultipartFile imgFile) {
+	public ShopExecution modifyShopInfo(Shop shop, MultipartFile imgFile) {
+		// 0.判断店铺信息或店铺ID是否为空
+		if (shop == null || shop.getShopId() == 0) {
+			return new ShopExecution(ShopStateEnum.NULL_SHOP);
+		}
 		// 1.判断是否修改图片
 		if (imgFile != null) {
 			Shop tempShop = shopDao.queryShopById(shop.getShopId());
-			ImageUtils.deleteFileOrPath(shop.getShopImg());
+			ImageUtils.deleteFileOrPath(tempShop.getShopImg());
 			try {
-				addShopImg(tempShop, imgFile);
+				addShopImg(shop, imgFile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -92,16 +95,13 @@ public class ShopServiceImpl implements ShopService {
 		}
 		// 2.执行修改操作
 		try {
-			if (shop != null || !shop.getShopId().equals("")) {
-				int result = shopDao.updateShop(shop);
-				if (result <= 0) {
-					return new ShopExecution(ShopStateEnum.INNER_ERROR);
-				}
-				shop = getShopById(shop.getShopId());
-				return new ShopExecution(ShopStateEnum.SUCCESS, shop);
-			} else {
-				return new ShopExecution(ShopStateEnum.NULL_SHOP);
+			shop.setLastEditTime(new Date());
+			int result = shopDao.updateShop(shop);
+			if (result <= 0) {
+				return new ShopExecution(ShopStateEnum.INNER_ERROR);
 			}
+			shop = getShopById(shop.getShopId());
+			return new ShopExecution(ShopStateEnum.SUCCESS, shop);
 		} catch (Exception e) {
 			throw new ShopOperationException("moidify shop error" + e.getMessage());
 		}

@@ -1,3 +1,6 @@
-2018-08-240 20:24:11:011 [main] DEBUG com.nuc.o2o.dao.ShopDao.queryShopById - ==>  Preparing: select shop_id,shop_name,shop_desc,shop_addr,phone,shop_img,s.create_time,s.last_edit_time,advice,s.area_id,area_name,s.shop_category_id,shop_category_name from tb_shop s,tb_area a,tb_shop_category sc where s.area_id=a.area_id and s.shop_category_id=sc.shop_category_id and s.shop_id=? 
-2018-08-240 20:24:11:011 [main] DEBUG com.nuc.o2o.dao.ShopDao.queryShopById - ==> Parameters: 29(Long)
-2018-08-240 20:24:11:011 [main] DEBUG com.nuc.o2o.dao.ShopDao.queryShopById - <==      Total: 1
+2018-08-242 10:55:03:003 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==>  Preparing: update tb_shop SET shop_name=?, shop_img=?, last_edit_time=? where shop_id=? 
+2018-08-242 10:55:03:003 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - ==> Parameters: 再次修改(String), F:\ssm整合项目\image\\uplod\item\shop\49\201808301055025583.jpg(String), 2018-08-30 10:55:03.903(Timestamp), 49(Long)
+2018-08-242 10:55:04:004 [main] DEBUG com.nuc.o2o.dao.ShopDao.updateShop - <==    Updates: 1
+2018-08-242 10:55:04:004 [main] DEBUG com.nuc.o2o.dao.ShopDao.queryShopById - ==>  Preparing: select shop_id,shop_name,shop_desc,shop_addr,phone,shop_img,s.create_time,s.last_edit_time,advice,s.area_id,area_name,s.shop_category_id,shop_category_name from tb_shop s,tb_area a,tb_shop_category sc where s.area_id=a.area_id and s.shop_category_id=sc.shop_category_id and s.shop_id=? 
+2018-08-242 10:55:04:004 [main] DEBUG com.nuc.o2o.dao.ShopDao.queryShopById - ==> Parameters: 49(Long)
+2018-08-242 10:55:04:004 [main] DEBUG com.nuc.o2o.dao.ShopDao.queryShopById - <==      Total: 1
