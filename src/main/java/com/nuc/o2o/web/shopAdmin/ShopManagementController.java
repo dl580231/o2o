@@ -45,7 +45,7 @@ public class ShopManagementController {
 	 */
 	@RequestMapping(value = "/modifyshopinfo", method = RequestMethod.POST)
 	public Map<String, Object> modifyShopInfo(HttpServletRequest request,
-			@RequestParam("shopImg") MultipartFile shopImg) {
+			@RequestParam(value="shopImg",required=false) MultipartFile shopImg) {
 		Map<String, Object> model = new HashMap<String, Object>();
 		// 0.判断验证码
 		boolean verifyCodeResult = CodeUtils.checkVerifyCode(request);
