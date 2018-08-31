@@ -3,6 +3,7 @@ package com.nuc.o2o.dao;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -57,9 +58,27 @@ public class ShopDaoTest extends BaseTest{
 	}
 	
 	@Test
+	@Ignore
 	public void queryShoById() {
 		Shop shop = shopDao.queryShopById(29L);
 		System.out.println(shop.getArea().getAreaName());
 		System.out.println(shop.getShopCategory().getShopCategoryName());
+	}
+	
+	@Test
+	public void queryShopListTest() {
+		Shop shop = new Shop();
+		PersonInfo personInfo = new PersonInfo();
+		personInfo.setUserId(1l);
+		shop.setOwner(personInfo);
+		List<Shop> list = shopDao.queryShopList(shop, 0, 6);
+		System.out.println(list.size());
+	}
+	
+	@Test
+	@Ignore
+	public void queryShopCountTest() {
+		Long count = shopDao.queryShopCount();
+		System.out.println(count);
 	}
 }

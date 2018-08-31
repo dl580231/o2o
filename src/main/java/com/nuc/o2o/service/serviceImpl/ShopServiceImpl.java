@@ -2,6 +2,7 @@ package com.nuc.o2o.service.serviceImpl;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import com.nuc.o2o.enums.ShopStateEnum;
 import com.nuc.o2o.expections.ShopOperationException;
 import com.nuc.o2o.service.ShopService;
 import com.nuc.o2o.utils.ImageUtils;
+import com.nuc.o2o.utils.PageCalculatorUtils;
 import com.nuc.o2o.utils.PathUtils;
 
 @Service
@@ -104,6 +106,18 @@ public class ShopServiceImpl implements ShopService {
 			return new ShopExecution(ShopStateEnum.SUCCESS, shop);
 		} catch (Exception e) {
 			throw new ShopOperationException("moidify shop error" + e.getMessage());
+		}
+	}
+
+	@Override
+	public ShopExecution getShopList(Shop shop, int pageIndex, int rowSize) {
+		int rowIndex = PageCalculatorUtils.rowIndexCalculate(pageIndex, rowSize);
+		Long count = shopDao.queryShopCount();
+		List<Shop> shopList = shopDao.queryShopList(shop, pageIndex, rowSize);
+		if(rowIndex<count&&shopList.size()>0) {
+			return new ShopExecution(ShopStateEnum.SUCCESS,shopList,count);
+		}else {
+			return new ShopExecution(ShopStateEnum.INNER_ERROR);
 		}
 	}
 

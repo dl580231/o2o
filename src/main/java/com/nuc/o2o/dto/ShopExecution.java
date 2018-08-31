@@ -39,7 +39,7 @@ public class ShopExecution {
 	}
 
 	/**
-	 * 店铺操作成功时执行的构造器
+	 * 店铺列表查询成功时执行的构造器
 	 * 
 	 * @param shopStateEnum
 	 * @param shopList
@@ -47,6 +47,18 @@ public class ShopExecution {
 	public ShopExecution(ShopStateEnum shopStateEnum, List<Shop> shopList) {
 		this.shopStateEnum = shopStateEnum;
 		this.shopList = shopList;
+	}
+	
+	/**
+	 * 分页查询是用于返回shopList,和shop总数量
+	 * @param shopStateEnum
+	 * @param shop
+	 * @param count
+	 */
+	public ShopExecution(ShopStateEnum shopStateEnum, List<Shop> shopList,Long shopCounts) {
+		this.shopStateEnum = shopStateEnum;
+		this.shopList = shopList;
+		this.shopCounts=shopCounts;
 	}
 
 	public ShopStateEnum getShopStateEnum() {

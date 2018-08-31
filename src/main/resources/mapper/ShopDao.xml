@@ -48,6 +48,8 @@
 		<result column="create_time" property="createTime" />
 		<result column="last_edit_time" property="lastEditTime" />
 		<result column="advice" property="advice" />
+		<result column="enable_status" property="enableStatus" />
+		<result column="priority" property="priority" />
 		<association property="area" javaType="Area">
 			<id column="area_id" property="areaId" />
 			<result column="area_name" property="areaName" />
@@ -57,4 +59,28 @@
 			<result column="shop_category_name" property="shopCategoryName" />
 		</association>
 	</resultMap>
+
+	<select id="queryShopList" resultMap="shopMap">
+		select
+		s.priority,enable_status,shop_id,shop_name,shop_desc,shop_addr,phone,shop_img,s.create_time,s.last_edit_time,advice,s.area_id,area_name,s.shop_category_id,shop_category_name
+		from
+		tb_shop s,tb_area a,tb_shop_category sc
+		<where>
+			<if test="shop.area!=null and shop.area.areaId != null">and s.area_id = #{shop.area.areId}</if>
+			<if
+				test="shop.shopCategory != null and shop.shopCategory.shopCategoryId != null">and s.shop_category_id = #{shop.shopCategory.shopCategoryId}
+			</if>
+			<if test="shop.owner != null and shop.owner.userId != null">and s.owner_id = #{shop.owner.userId}</if>
+			<if test="shop.shopName != null">and s.shop_name=%#{shop.shopName}%</if>
+			<if test="shop.enableStatus != null">and s.enable_status=#{shop.enableStatus}</if>
+			and s.area_id=a.area_id
+			and s.shop_category_id=sc.shop_category_id
+		</where>
+		order by s.priority DESC
+		limit #{rowIndex},#{rowSize};
+	</select>
+
+	<select id="queryShopCount" resultType="Long">
+		select count(0) from tb_shop
+	</select>
 </mapper>

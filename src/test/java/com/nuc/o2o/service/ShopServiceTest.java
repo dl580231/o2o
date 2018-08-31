@@ -49,6 +49,7 @@ public class ShopServiceTest extends BaseTest {
 */	}
 	
 	@Test
+	@Ignore
 	public void modifyShop() throws FileNotFoundException, IOException {
 		Shop shop = new Shop();
 		shop.setShopId(49l);
@@ -59,5 +60,11 @@ public class ShopServiceTest extends BaseTest {
 		MockMultipartFile multipartFile = new MockMultipartFile(file.getName(),file.getName(),null,new FileInputStream(file));
 		ShopExecution info = shopService.modifyShopInfo(shop, multipartFile);
 		System.out.println(info.getShop().getShopImg());
+	}
+	
+	@Test
+	public void getShopList() {
+		ShopExecution shopList = shopService.getShopList(new Shop(), 5, 2);
+		System.out.println(shopList.getShopCounts());
 	}
 }

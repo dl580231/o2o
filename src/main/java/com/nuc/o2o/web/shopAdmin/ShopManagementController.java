@@ -37,6 +37,61 @@ public class ShopManagementController {
 	@Autowired
 	private AreaService areaService;
 
+	@RequestMapping(value = "/getshopmanagementinfo", method = RequestMethod.GET)
+	public Map<String, Object> getShopManagementInfo(HttpServletRequest request,
+			@RequestParam(value = "shopId", required = false) Long shopId) {
+		Map<String, Object> model = new HashMap<>();
+		if (shopId != null && shopId > 0) {
+			model.put("redirect", false);
+			Shop currentShop = new Shop();
+			currentShop.setShopId(shopId);
+			request.getSession().setAttribute("currentShop", currentShop);
+		} else {
+			Object currentShopObject = request.getSession().getAttribute("currentShop");
+			if (currentShopObject != null) {
+				Shop currentShop = (Shop) currentShopObject;
+				shopId = currentShop.getShopId();
+				model.put("redirect", false);
+				model.put("shopId", shopId);
+			} else {
+				model.put("redirect", true);
+				model.put("url", "/o2o/shop/shoplist");
+			}
+		}
+		return model;
+	}
+
+	/**
+	 * 根据session中存储得user信息获得user下的shop列表
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getshoplist", method = RequestMethod.GET)
+	public Map<String, Object> getShopList(HttpServletRequest request) {
+		Map<String, Object> model = new HashMap<>();
+		// user信息要从session中获取，由于还没有实现登陆，手动设置user信息
+		PersonInfo user = new PersonInfo();
+		user.setUserId(1l);
+		user.setName("小明");
+		request.getSession().setAttribute("user", user);
+		// user信息要从session中获取
+		PersonInfo uInfo = (PersonInfo) request.getSession().getAttribute("user");
+		Shop shop = new Shop();
+		shop.setOwner(uInfo);
+		try {
+			ShopExecution se = shopService.getShopList(shop, 0, 100);
+			model.put("success", true);
+			model.put("user", user);
+			model.put("shopList", se.getShopList());
+		} catch (Exception e) {
+			model.put("success", false);
+			model.put("user", user);
+		}
+		return model;
+	}
+
 	/**
 	 * 根据表单传来的信息修改店铺信息
 	 * 
@@ -45,7 +100,7 @@ public class ShopManagementController {
 	 */
 	@RequestMapping(value = "/modifyshopinfo", method = RequestMethod.POST)
 	public Map<String, Object> modifyShopInfo(HttpServletRequest request,
-			@RequestParam(value="shopImg",required=false) MultipartFile shopImg) {
+			@RequestParam(value = "shopImg", required = false) MultipartFile shopImg) {
 		Map<String, Object> model = new HashMap<String, Object>();
 		// 0.判断验证码
 		boolean verifyCodeResult = CodeUtils.checkVerifyCode(request);
