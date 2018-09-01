@@ -9,12 +9,14 @@ import com.nuc.o2o.entity.Shop;
 public interface ShopDao {
 	/**
 	 * 查询shop的总数
+	 * 
 	 * @return
 	 */
 	public Long queryShopCount();
-	
+
 	/**
 	 * 根据传来的信息模糊查询店铺列表
+	 * 
 	 * @param shop
 	 * @param rowStart
 	 * @param rowEnd

@@ -37,9 +37,10 @@ public class ShopManagementController {
 	@Autowired
 	private AreaService areaService;
 
+	@ResponseBody
 	@RequestMapping(value = "/getshopmanagementinfo", method = RequestMethod.GET)
 	public Map<String, Object> getShopManagementInfo(HttpServletRequest request,
-			@RequestParam(value = "shopId", required = false) Long shopId) {
+			@RequestParam(value = "shopId") Long shopId) {
 		Map<String, Object> model = new HashMap<>();
 		if (shopId != null && shopId > 0) {
 			model.put("redirect", false);
@@ -98,6 +99,7 @@ public class ShopManagementController {
 	 * @param model
 	 * @return
 	 */
+	@ResponseBody
 	@RequestMapping(value = "/modifyshopinfo", method = RequestMethod.POST)
 	public Map<String, Object> modifyShopInfo(HttpServletRequest request,
 			@RequestParam(value = "shopImg", required = false) MultipartFile shopImg) {
@@ -106,11 +108,11 @@ public class ShopManagementController {
 		boolean verifyCodeResult = CodeUtils.checkVerifyCode(request);
 		if (!verifyCodeResult) {
 			model.put("success", false);
-			model.put("errorMsg", "验证码输入错误,请重新输入验证码");
+			model.put("errorMsg", "验证码输入错误,请重新输入验证码:");
 			return model;
 		}
 		// 1.处理前端传来的参数
-		String shopInfo = request.getParameter("shopInfo");
+		String shopInfo = request.getParameter("shop");
 		ObjectMapper mapper = new ObjectMapper();
 		Shop shop = null;
 		try {
@@ -121,9 +123,9 @@ public class ShopManagementController {
 			return model;
 		}
 		// 2.调用service层修改店铺信息
-		if (shop == null) {
+		if (shop == null || shop.getShopId() == 0) {
 			model.put("success", false);
-			model.put("errorMsg", "shop信息为空");
+			model.put("errorMsg", "shop信息或shopId为空");
 			return model;
 		} else {
 			try {
@@ -150,8 +152,9 @@ public class ShopManagementController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/getshopinfobyid", method = RequestMethod.GET)
+
 	@ResponseBody
+	@RequestMapping(value = "/getshopinfobyid", method = RequestMethod.GET)
 	public Map<String, Object> getShopInfoById(@RequestParam("shopId") Long shopId) {
 		Map<String, Object> model = new HashMap<>();
 		Shop shop = null;
@@ -162,7 +165,6 @@ public class ShopManagementController {
 			model.put("shop", shop);
 			model.put("areaList", areaList);
 		} catch (Exception e) {
-			model.put("shopInfo", shop);
 			model.put("errorMsg", "获取店铺信息失败" + e.getMessage());
 		}
 		return model;
@@ -173,8 +175,9 @@ public class ShopManagementController {
 	 * 
 	 * @return model(json)
 	 */
-	@RequestMapping(value = "/getshopinitinfo", method = RequestMethod.GET)
+
 	@ResponseBody
+	@RequestMapping(value = "/getshopinitinfo", method = RequestMethod.GET)
 	public Map<String, Object> getShopInitInfo() {
 		Map<String, Object> modelMap = new HashMap<>();
 		try {
@@ -197,8 +200,9 @@ public class ShopManagementController {
 	 * @param shopImg
 	 * @return
 	 */
-	@RequestMapping(value = "/shopregister", method = RequestMethod.POST)
+
 	@ResponseBody
+	@RequestMapping(value = "/shopregister", method = RequestMethod.POST)
 	public Map<String, Object> shopRegister(HttpServletRequest request,
 			@RequestParam("shopImg") MultipartFile shopImg) {
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -223,7 +227,7 @@ public class ShopManagementController {
 			model.put("errorMsg", "图片文件失效");
 			return model;
 		}
-		String shopInfo = request.getParameter("shopInfo");
+		String shopInfo = request.getParameter("shop");
 		ObjectMapper mapper = new ObjectMapper();
 		Shop shop = null;
 		try {

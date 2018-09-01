@@ -81,6 +81,7 @@
 	</select>
 
 	<select id="queryShopCount" resultType="Long">
-		select count(0) from tb_shop
+		select count(0) from
+		tb_shop
 	</select>
 </mapper>

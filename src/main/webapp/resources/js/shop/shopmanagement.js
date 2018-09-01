@@ -8,11 +8,11 @@ $(function() {
 			if /*
 			 * (data.shopId != undefined && data.shopId !=
 			 * null)
-			 */(!data.shopId) {
+			 */(data.shopId) {
 				shopId = data.shopId;
 			}
 			$('#shopInfo').attr('href',
-					'/o2o/shopadmin/shopoperation?shopId=' + shopId);
+					'/o2o/shop/shopoperation?shopId=' + shopId);
 		}
 	});
 });

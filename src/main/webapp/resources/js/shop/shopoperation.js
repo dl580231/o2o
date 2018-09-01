@@ -13,28 +13,30 @@ $(function() {
 	// 修改店铺信息的URL
 	var modifyUrl = '/o2o/shopadmin/modifyshopinfo'
 	// 取得所有二级店铺类别以及区域信息，并分别赋值进类别列表以及区域列表
-	if(isEdit){
+	if (isEdit) {
 		getShopInfoById();
-	}else{
+	} else {
 		getShopInitInfo();
 	}
-	
-	function getShopInfoById(){
+
+	function getShopInfoById() {
 		$.getJSON(shopInfoUrl, function(data) {
 			if (data.success) {
 				var tempHtml = '';
 				var tempAreaHtml = '';
-				var shop=data.shop;
-				tempHtml += '<option data-id="' + shop.shopCategory.shopCategoryId
-							+ '">' + shop.shopCategory.shopCategoryName + '</option>';
+				var shop = data.shop;
+				tempHtml += '<option data-id="'
+						+ shop.shopCategory.shopCategoryId + '">'
+						+ shop.shopCategory.shopCategoryName + '</option>';
 				data.areaList.map(function(item, index) {
 					tempAreaHtml += '<option data-id="' + item.areaId + '">'
 							+ item.areaName + '</option>';
 				});
 				$('#shop-category').html(tempHtml);
-				$('#shop-category').attr("disabled","disabled")
+				$('#shop-category').attr("disabled", "disabled")
 				$('#shop-area').html(tempAreaHtml);
-				$('#shop-area[data-id="' + shop.area.areaId+']').attr("selected","selected")
+				$('#shop-area option[data-id="' + shop.area.areaId + '"]')
+						.attr("selected", "selected")
 				$('#shop-name').val(shop.shopName);
 				$('#shop-addr').val(shop.shopAddr);
 				$('#shop-phone').val(shop.phone);
@@ -42,19 +44,29 @@ $(function() {
 			}
 		});
 	}
-	
+
 	function getShopInitInfo() {
 		$.getJSON(initUrl, function(data) {
 			if (data.success) {
 				var tempHtml = '';
 				var tempAreaHtml = '';
-				data.shopCategoryList.map(function(item, index) {
-					tempHtml += '<option data-id="' + item.shopCategoryId
-							+ '">' + item.shopCategoryName + '</option>';
+				/*
+				 * data.shopCategoryList.map(function(item, index) { tempHtml += '<option
+				 * data-id="' + item.shopCategoryId + '">' +
+				 * item.shopCategoryName + '</option>'; });
+				 */
+				$.map(data.shopCategoryList, function(value, index) {
+					tempHtml += '<option data-id="' + value.shopCategoryId
+							+ '">' + value.shopCategoryName + '</option>';
 				});
-				data.areaList.map(function(item, index) {
-					tempAreaHtml += '<option data-id="' + item.areaId + '">'
-							+ item.areaName + '</option>';
+				/*
+				 * data.areaList.map(function(item, index) { tempAreaHtml += '<option
+				 * data-id="' + item.areaId + '">' + item.areaName + '</option>';
+				 * });
+				 */
+				$.map(data.areaList, function(value, index) {
+					tempAreaHtml += '<option data-id="' + value.areaId + '">'
+							+ value.areaName + '</option>';
 				});
 				$('#shop-category').html(tempHtml);
 				$('#shop-area').html(tempAreaHtml);
@@ -89,8 +101,8 @@ $(function() {
 				return !this.selected;
 			}).data('id')
 		};
-		if(isEdit){
-			shop.shopId=shopId;
+		if (isEdit) {
+			shop.shopId = shopId;
 		}
 		// 获取上传的图片文件流
 		var shopImg = $('#shop-img')[0].files[0];
@@ -99,12 +111,12 @@ $(function() {
 		// 添加图片流进表单对象里
 		formData.append('shopImg', shopImg);
 		// 将shop json对象转成字符流保存至表单对象key为shopStr的的键值对里
-		formData.append('shopInfo', JSON.stringify(shop));
+		formData.append('shop', JSON.stringify(shop));
 		// 添加验证码到表单对象中
 		formData.append('verifyCode', verifyCode);
 		// 将数据提交至后台处理相关操作
 		$.ajax({
-			url : (isEdit?modifyUrl:registerShopUrl),
+			url : (isEdit ? modifyUrl : registerShopUrl),
 			type : 'POST',
 			data : formData,
 			contentType : false,
@@ -115,12 +127,12 @@ $(function() {
 					alert('提交成功！');
 					$.toast('提交成功！');
 				} else {
+					alert('提交失败！' + data.errorMsg);
 					$.toast('提交失败！' + data.errorMsg);
 				}
 
 			}
 		});
 	});
-	
 
 })

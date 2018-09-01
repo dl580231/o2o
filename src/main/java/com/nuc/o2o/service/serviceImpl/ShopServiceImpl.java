@@ -80,10 +80,6 @@ public class ShopServiceImpl implements ShopService {
 
 	@Override
 	public ShopExecution modifyShopInfo(Shop shop, MultipartFile imgFile) {
-		// 0.判断店铺信息或店铺ID是否为空
-		if (shop == null || shop.getShopId() == 0) {
-			return new ShopExecution(ShopStateEnum.NULL_SHOP);
-		}
 		// 1.判断是否修改图片
 		if (imgFile != null) {
 			Shop tempShop = shopDao.queryShopById(shop.getShopId());
