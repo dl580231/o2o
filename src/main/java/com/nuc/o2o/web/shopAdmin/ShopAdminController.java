@@ -6,7 +6,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping(value="/shop/", method=RequestMethod.GET)
-public class ShopAdminController {
+public class ShopAdminController {	
+	
+	@RequestMapping("/productcategorymanagement") 
+	public String productCategoryManagement() {
+		return "/shop/productcategorymanagement";
+	}
+	
 	@RequestMapping("/shopoperation")
 	public String shopOperation() {
 		return "/shop/shopoperation";

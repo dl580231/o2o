@@ -15,7 +15,7 @@ public class ProductCategoryServiceTest extends BaseTest{
 	
 	@Test
 	public void getProductCatrgoryListTest() {
-		List<ProductCategory> list = serviceImpl.getProductCatrgoryList(29l);
-		System.out.println(list.size());
+		List<ProductCategory> list = serviceImpl.getProductCatrgoryList(28l);
+		System.out.println(list);
 	}
 }

@@ -59,5 +59,7 @@ public class ProductCategory {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+	
+	
 
 }
