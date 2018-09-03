@@ -12,8 +12,6 @@ $(function() {
 			}
 			$('#shopInfo').attr('href',
 					'/o2o/shop/shopoperation?shopId=' + shopId);
-			$("#productCategoryList").attr('href',
-					'/o2o/shop/productcategorymanagement?shopId=' + shopId);
 		}
 	});
 });

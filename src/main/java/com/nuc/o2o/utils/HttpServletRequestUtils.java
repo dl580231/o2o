@@ -3,6 +3,10 @@ package com.nuc.o2o.utils;
 import javax.servlet.http.HttpServletRequest;
 
 public class HttpServletRequestUtils {
+	public static Object getSessionAttr(HttpServletRequest request, String key) {
+		return request.getSession().getAttribute(key);
+	}
+
 	public static int getInt(HttpServletRequest request, String key) {
 		try {
 			return Integer.decode(request.getParameter(key));

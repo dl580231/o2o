@@ -13,7 +13,7 @@ import com.nuc.o2o.dao.ShopDao;
 import com.nuc.o2o.dto.ShopExecution;
 import com.nuc.o2o.entity.Shop;
 import com.nuc.o2o.enums.ShopStateEnum;
-import com.nuc.o2o.expections.ShopOperationException;
+import com.nuc.o2o.exceptions.ShopOperationException;
 import com.nuc.o2o.service.ShopService;
 import com.nuc.o2o.utils.ImageUtils;
 import com.nuc.o2o.utils.PageCalculatorUtils;

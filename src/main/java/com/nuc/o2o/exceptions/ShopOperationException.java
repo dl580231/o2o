@@ -1,4 +1,4 @@
-package com.nuc.o2o.expections;
+package com.nuc.o2o.exceptions;
 
 public class ShopOperationException extends RuntimeException {
 

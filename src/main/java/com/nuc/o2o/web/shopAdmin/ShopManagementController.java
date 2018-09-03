@@ -83,12 +83,17 @@ public class ShopManagementController {
 		shop.setOwner(uInfo);
 		try {
 			ShopExecution se = shopService.getShopList(shop, 0, 100);
-			model.put("success", true);
-			model.put("user", user);
-			model.put("shopList", se.getShopList());
+			if (se.getShopStateEnum().getState() == ShopStateEnum.SUCCESS.getState()) {
+				model.put("success", true);
+				model.put("user", user);
+				model.put("shopList", se.getShopList());
+			} else {
+				model.put("success", false);
+				model.put("errorMsg", "获取店铺列表信息失败");
+			}
 		} catch (Exception e) {
 			model.put("success", false);
-			model.put("user", user);
+			model.put("errorMsg", e.getMessage().toString());
 		}
 		return model;
 	}
